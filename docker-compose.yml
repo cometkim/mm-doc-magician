@@ -1,0 +1,8 @@
+version: '3.1'
+services:
+  app:
+    build: app 
+    env_file: .env
+
+  converter:
+    image: thecodingmachine/gotenberg:1.0.0
