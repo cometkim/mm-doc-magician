@@ -10,6 +10,7 @@ import (
 )
 
 type App struct {
+	UserId   string
 	Client   *model.Client4
 	WsClient *model.WebSocketClient
 }
@@ -58,11 +59,17 @@ func (app *App) initClient(config *ClientConfig) error {
 	app.Client = model.NewAPIv4Client(config.MattermostBaseURL)
 	if len(config.PersonalAccessToken) > 0 {
 		app.Client.AuthToken = config.PersonalAccessToken
-	} else {
-		_, res := app.Client.Login(config.Username, config.Password)
+		user, res := app.Client.GetMe("")
 		if res.Error != nil {
 			return res.Error
 		}
+		app.UserId = user.Id
+	} else {
+		user, res := app.Client.Login(config.Username, config.Password)
+		if res.Error != nil {
+			return res.Error
+		}
+		app.UserId = user.Id
 	}
 	return nil
 }
