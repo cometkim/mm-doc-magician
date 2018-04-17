@@ -16,16 +16,13 @@ type App struct {
 
 func NewApp(config *ClientConfig) (*App, error) {
 	app := &App{}
-	var err error
 
-	err = app.initClient(config)
-	if err != nil {
+	if err := app.initClient(config); err != nil {
 		return nil, err
 	}
 	fmt.Println("APIv4 Client is successfully initialized")
 
-	err = app.initWsClient(config)
-	if err != nil {
+	if err := app.initWsClient(config); err != nil {
 		return nil, err
 	}
 	fmt.Println("APIv4 WebSocket Client is successfully initialized")
