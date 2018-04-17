@@ -6,10 +6,12 @@ RUN set -ex; \
     dep version
 
 WORKDIR /go/src/app
-COPY . .
 
-RUN set -ex; \
-    dep ensure -v && \
-    go install -v ./... 
+COPY Gopkg.lock .
+COPY Gopkg.toml .
+RUN dep ensure -v -vendor-only
+
+COPY . .
+RUN go install -v ./... 
 
 CMD ["app"]
